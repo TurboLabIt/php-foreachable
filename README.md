@@ -33,3 +33,6 @@ Use it to quickly create collections of objects. You can then iterate over it.
     ...
  }
 ````
+
+See: [MyDataSet](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/MyDataSet.php) | [Usage](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/ForeachableTest.php)
+
