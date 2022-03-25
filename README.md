@@ -21,17 +21,17 @@ Use it to quickly create collections of objects. You can then iterate over it.
  class Listing implements \Iterator, \Countable, \ArrayAccess
  {
     use Foreachable;
-    ...
-    ...
  }
+ ?>
  
- ...
  
+ <?php
  $collListing = new Listing();
  foreach($collListing as $oneItem) {
  
-    ...
+    // ..
  }
+ ?>
 ````
 
 See: [MyDataSet](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/MyDataSet.php) | [Usage](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/ForeachableTest.php)
