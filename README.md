@@ -36,3 +36,12 @@ Use it to quickly create collections of objects. You can then iterate over it.
 
 See: [MyDataSet](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/MyDataSet.php) | [Usage](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/ForeachableTest.php)
 
+
+## 🧪 Test it
+
+````bash
+git clone git@github.com:TurboLabIt/php-foreachable.git
+cd php-foreachable
+clear && bash script/test_runner.sh
+
+````
