@@ -6,56 +6,16 @@ namespace TurboLabIt\Foreachable;
 
 trait Foreachable
 {
-    protected $arrData = [];
-    protected $position = 0;
+    protected array $arrData = [];
+    protected int $position = 0;
 
 
-    public function rewind() : self
-    {
-        $this->position = 0;
-        return $this;
-    }
+    /**
+     * Foreachable specials
+     * ====================
+     */
 
-
-    public function current()
-    {
-        $key = $this->getRealForeachablePosition();
-        if($key === false) {
-
-            return null;
-        }
-
-        return $this->arrData[$key];
-    }
-
-
-    public function key() : int
-    {
-        return $this->position;
-    }
-
-
-    public function next() : self
-    {
-        ++$this->position;
-        return $this;
-    }
-
-
-    public function valid() : bool
-    {
-        $key = $this->getRealForeachablePosition();
-        return $key !== false;
-    }
-
-
-    public function count() : int
-    {
-        return count($this->arrData);
-    }
-
-
-    public function first()
+    public function first() : ?mixed
     {
         if( $this->arrData == [] ) {
             return null;
@@ -66,7 +26,7 @@ trait Foreachable
     }
 
 
-    public function last()
+    public function last() : ?mixed
     {
         if( $this->arrData == [] ) {
             return null;
@@ -77,7 +37,7 @@ trait Foreachable
     }
 
 
-    public function get($key)
+    public function get($key) : ?mixed
     {
         if( !array_key_exists($key, $this->arrData) ) {
             return null;
@@ -113,43 +73,113 @@ trait Foreachable
     }
 
 
-    protected function getRealForeachablePosition()
+    protected function getRealForeachablePosition() : mixed
     {
-        $keys   = array_keys($this->arrData);
+        $keys = array_keys($this->arrData);
         if( !array_key_exists($this->position, $keys) ) {
             return false;
         }
 
         return $keys[$this->position];
     }
-    
-    
-    public function iterate(callable $callback, ?array $arrData = null) : array
-    {
-        if( $arrData === null ) {
-            $arrData = &$this->arrData;
-        }
 
-        if( empty($arrData) ) {
+
+    public function iterate(callable $callback) : self
+    {
+        if(empty($this->arrData)) {
             return [];
         }
 
-        foreach($arrData as &$item) {
-            $callback($item, $arrData);
+        array_walk($this->arrData, $callback);
+
+        return $this;
+    }
+
+
+    public function getFilteredData(callable $callback, $reindexToNumericArray = false) : array
+    {
+        if(empty($this->arrData)) {
+            return [];
+        }
+
+        $arrData = array_filter($this->arrData, $callback);
+
+        if($reindexToNumericArray) {
+            $arrData = array_values($arrData);
         }
 
         return $arrData;
     }
 
 
+    public function filter(callable $callback, $reindexToNumericArray = false) : self
+    {
+        $this->arrData = $this->getFilteredData($callback, $reindexToNumericArray);
+        return $this;
+    }
+
+
+    /**
+     * The Iterator interface
+     * ======================
+     * @see https://www.php.net/manual/en/class.iterator.php
+     */
+
+    public function current() : mixed
+    {
+        $key = $this->getRealForeachablePosition();
+        if($key === false) {
+            return null;
+        }
+
+        return $this->arrData[$key];
+    }
+
+
+    public function key() : mixed
+    {
+        return $this->position;
+    }
+
+
+    public function next()
+    {
+        ++$this->position;
+        return $this;
+    }
+
+
+    public function rewind()
+    {
+        $this->position = 0;
+        return $this;
+    }
+
+
+    public function valid() : bool
+    {
+        $key = $this->getRealForeachablePosition();
+        return $key !== false;
+    }
+
+
+    /**
+     * The Countable interface
+     * =======================
+     * @see https://www.php.net/manual/en/class.countable.php
+     */
+
+    public function count() : int
+    {
+        return count($this->arrData);
+    }
+
 
     /**
      * The ArrayAccess interface
      * =========================
-     *
      * @see https://www.php.net/manual/en/class.arrayaccess.php
      */
-
 
     public function offsetExists($offset)
     {
@@ -187,7 +217,6 @@ trait Foreachable
     {
         $arrKeys = array_values(array_flip($this->arrData));
         if( !array_key_exists($offset, $arrKeys) ) {
-
             return null;
         }
 
