@@ -15,6 +15,7 @@ composer require turbolabit/php-foreachable:dev-main
 Use it to quickly create collections of objects. You can then iterate over it.
 
 ````php
+<?php
  use TurboLabIt\Foreachable\Foreachable;
  
  class Listing implements \Iterator, \Countable, \ArrayAccess
@@ -32,4 +33,3 @@ Use it to quickly create collections of objects. You can then iterate over it.
     ...
  }
 ````
-

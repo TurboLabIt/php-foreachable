@@ -15,7 +15,7 @@ trait Foreachable
      * ====================
      */
 
-    public function first() : ?mixed
+    public function first() : mixed
     {
         if( $this->arrData == [] ) {
             return null;
@@ -26,7 +26,7 @@ trait Foreachable
     }
 
 
-    public function last() : ?mixed
+    public function last() : mixed
     {
         if( $this->arrData == [] ) {
             return null;
@@ -37,7 +37,7 @@ trait Foreachable
     }
 
 
-    public function get($key) : ?mixed
+    public function get($key) : mixed
     {
         if( !array_key_exists($key, $this->arrData) ) {
             return null;
