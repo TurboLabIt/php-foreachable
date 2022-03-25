@@ -15,7 +15,7 @@ trait Foreachable
      * ====================
      */
 
-    public function first() : mixed
+    public function first()
     {
         if( $this->arrData == [] ) {
             return null;
@@ -26,7 +26,7 @@ trait Foreachable
     }
 
 
-    public function last() : mixed
+    public function last()
     {
         if( $this->arrData == [] ) {
             return null;
@@ -37,7 +37,7 @@ trait Foreachable
     }
 
 
-    public function get($key) : mixed
+    public function get($key)
     {
         if( !array_key_exists($key, $this->arrData) ) {
             return null;
@@ -73,7 +73,7 @@ trait Foreachable
     }
 
 
-    protected function getRealForeachablePosition() : mixed
+    protected function getRealForeachablePosition()
     {
         $keys = array_keys($this->arrData);
         if( !array_key_exists($this->position, $keys) ) {
@@ -125,7 +125,7 @@ trait Foreachable
      * @see https://www.php.net/manual/en/class.iterator.php
      */
 
-    public function current() : mixed
+    public function current()
     {
         $key = $this->getRealForeachablePosition();
         if($key === false) {
@@ -136,7 +136,7 @@ trait Foreachable
     }
 
 
-    public function key() : mixed
+    public function key()
     {
         return $this->position;
     }
