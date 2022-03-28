@@ -98,7 +98,7 @@ trait Foreachable
 
     public function getFilteredData(callable $callback, $reindexToNumericArray = false) : array
     {
-        if(empty($this->arrData)) {
+        if( empty($this->arrData) ) {
             return [];
         }
 
@@ -115,6 +115,17 @@ trait Foreachable
     public function filter(callable $callback, $reindexToNumericArray = false) : self
     {
         $this->arrData = $this->getFilteredData($callback, $reindexToNumericArray);
+        return $this;
+    }
+
+
+    public function filterIfNotEmptyResult(callable $callback, $reindexToNumericArray = false) : self
+    {
+        $arrDataFiltered = $this->getFilteredData($callback, $reindexToNumericArray);
+        if( !empty($arrDataFiltered) ) {
+            $this->arrData = $arrDataFiltered;
+        }
+
         return $this;
     }
 
