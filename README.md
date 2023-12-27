@@ -5,7 +5,6 @@ A trait to create custom PHP DataSets/Collections faster
 ## 📦 Install it with composer
 
 ````bash
-composer config repositories.turbolabit/php-foreachable git https://github.com/TurboLabIt/php-foreachable.git
 composer require turbolabit/php-foreachable:dev-main
 
 ````
