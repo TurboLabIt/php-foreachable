@@ -26,6 +26,19 @@ trait Foreachable
     }
 
 
+    public function popFirst()
+    {
+        if( $this->arrData == [] ) {
+            return null;
+        }
+
+        $firstKey   = array_keys($this->arrData)[0];
+        $firstValue = $this->arrData[$firstKey];
+        unset($this->arrData[$firstKey]);
+        return $firstValue;
+    }
+
+
     public function last()
     {
         if( $this->arrData == [] ) {
@@ -61,15 +74,41 @@ trait Foreachable
     }
 
 
-    public function slice($num, $offset = 0, bool $applyToSource = false) : array
+    public function getItems(int $numOfItems, $offset = 0, bool $allOrNothing = false, bool $applyToSource = true) : array
     {
-        $arrSliced = array_slice($this->arrData, $offset, $num, true);
-
-        if($applyToSource) {
-            $this->arrData = $arrSliced;
+        if( $numOfItems <= 0 || $offset >= count($this->arrData) ) {
+            return [];
         }
 
-        return $arrSliced;
+        $arrExtractedItems = [];
+        $i=0;
+        foreach($this->arrData as $k => $value) {
+
+            if( $i < $offset ) {
+
+                $i++;
+                continue;
+            }
+            $i++;
+
+            $arrExtractedItems[$k] = $value;
+
+            if( count($arrExtractedItems) == $numOfItems ) {
+                break;
+            }
+        }
+
+        if( $allOrNothing && count($arrExtractedItems) < $numOfItems ) {
+            return [];
+        }
+
+        if($applyToSource) {
+            foreach( array_keys($arrExtractedItems) as $key) {
+                unset( $this->arrData[$key] );
+            }
+        }
+
+        return $arrExtractedItems;
     }
 
 
