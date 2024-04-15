@@ -126,7 +126,7 @@ trait Foreachable
     public function iterate(callable $callback) : self
     {
         if(empty($this->arrData)) {
-            return [];
+            return $this;
         }
 
         array_walk($this->arrData, $callback);
