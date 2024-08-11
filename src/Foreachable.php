@@ -4,18 +4,76 @@
  */
 namespace TurboLabIt\Foreachable;
 
+
 trait Foreachable
 {
-    protected array $arrData = [];
-    protected int $position = 0;
+    //<editor-fold defaultstate="collapsed" desc="*** 🍹 Class properties ***">
+    protected array $arrData    = [];
+    protected int $position     = 0;
+    //</editor-fold>
 
 
-    /**
-     * Foreachable specials
-     * ====================
-     */
+    //<editor-fold defaultstate="collapsed" desc="*** 💾 Setters ***">
+    public function setData(array $arrData) : static
+    {
+        $this->arrData = $arrData;
+        return $this;
+    }
 
-    public function first()
+
+    public function add($item, mixed $key = null, bool $nonPositionalKey = true) : static
+    {
+        if ($key === null) {
+
+            $this->arrData[] = $item;
+            return $this;
+        }
+
+        if($nonPositionalKey) {
+            $key = (string)$key;
+        }
+
+        $this->arrData[$key] = $item;
+        return $this;
+    }
+    //</editor-fold>
+
+
+    //<editor-fold defaultstate="collapsed" desc="*** 🧹 Removers ***">
+    public function clear() : static
+    {
+        $this->arrData = [];
+        $this->rewind();
+        return $this;
+    }
+
+
+    public function popFirst() : mixed
+    {
+        if( $this->arrData == [] ) {
+            return null;
+        }
+
+        $firstKey   = array_keys($this->arrData)[0];
+        $firstValue = $this->arrData[$firstKey];
+        unset($this->arrData[$firstKey]);
+        return $firstValue;
+    }
+    //</editor-fold>
+
+
+    //<editor-fold defaultstate="collapsed" desc="*** 🔎 Getters ***">
+    public function get(mixed $key) : mixed
+    {
+        if( !array_key_exists($key, $this->arrData) ) {
+            return null;
+        }
+
+        return $this->arrData[$key];
+    }
+
+
+    public function first() : mixed
     {
         if( $this->arrData == [] ) {
             return null;
@@ -26,7 +84,7 @@ trait Foreachable
     }
 
 
-    public function last()
+    public function last() : mixed
     {
         if( $this->arrData == [] ) {
             return null;
@@ -37,71 +95,55 @@ trait Foreachable
     }
 
 
-    public function get($key)
-    {
-        if( !array_key_exists($key, $this->arrData) ) {
-            return null;
-        }
-
-        return $this->arrData[$key];
-    }
-
-
-    public function clear() : self
-    {
-        $this->arrData = [];
-        $this->rewind();
-        return $this;
-    }
-
-
     public function getAll() : array
     {
         return $this->arrData;
     }
 
 
-    public function slice($num, $offset = 0, bool $applyToSource = false) : array
+    public function getItems(int $numOfItems, $offset = 0, bool $allOrNothing = false, bool $applyToSource = true) : array
     {
-        $arrSliced = array_slice($this->arrData, $offset, $num, true);
+        if( $numOfItems <= 0 || $offset >= count($this->arrData) ) {
+            return [];
+        }
+
+        $arrExtractedItems = [];
+        $i=0;
+        foreach($this->arrData as $k => $value) {
+
+            if( $i < $offset ) {
+
+                $i++;
+                continue;
+            }
+
+            $i++;
+
+            $arrExtractedItems[$k] = $value;
+
+            if( count($arrExtractedItems) == $numOfItems ) {
+                break;
+            }
+        }
+
+        if( $allOrNothing && count($arrExtractedItems) < $numOfItems ) {
+            return [];
+        }
 
         if($applyToSource) {
-            $this->arrData = $arrSliced;
+            foreach( array_keys($arrExtractedItems) as $key) {
+                unset( $this->arrData[$key] );
+            }
         }
 
-        return $arrSliced;
+        return $arrExtractedItems;
     }
+    //</editor-fold>
 
 
-    protected function getRealForeachablePosition()
+    //<editor-fold defaultstate="collapsed" desc="*** 🔮 Filters ***">
+    public function getFilteredData(callable $callback, bool $reindexToNumericArray = false) : array
     {
-        $keys = array_keys($this->arrData);
-        if( !array_key_exists($this->position, $keys) ) {
-            return false;
-        }
-
-        return $keys[$this->position];
-    }
-
-
-    public function iterate(callable $callback) : self
-    {
-        if(empty($this->arrData)) {
-            return [];
-        }
-
-        array_walk($this->arrData, $callback);
-
-        return $this;
-    }
-
-
-    public function getFilteredData(callable $callback, $reindexToNumericArray = false) : array
-    {
-        if( empty($this->arrData) ) {
-            return [];
-        }
-
         $arrData = array_filter($this->arrData, $callback);
 
         if($reindexToNumericArray) {
@@ -112,14 +154,14 @@ trait Foreachable
     }
 
 
-    public function filter(callable $callback, $reindexToNumericArray = false) : self
+    public function filter(callable $callback, bool $reindexToNumericArray = false) : static
     {
         $this->arrData = $this->getFilteredData($callback, $reindexToNumericArray);
         return $this;
     }
 
 
-    public function filterIfNotEmptyResult(callable $callback, $reindexToNumericArray = false) : self
+    public function filterIfNotEmptyResult(callable $callback, bool $reindexToNumericArray = false) : static
     {
         $arrDataFiltered = $this->getFilteredData($callback, $reindexToNumericArray);
         if( !empty($arrDataFiltered) ) {
@@ -128,13 +170,30 @@ trait Foreachable
 
         return $this;
     }
+    //</editor-fold>
 
 
-    /**
-     * The Iterator interface
-     * ======================
-     * @see https://www.php.net/manual/en/class.iterator.php
-     */
+    //<editor-fold defaultstate="collapsed" desc="*** ✴️ Iterate with callback ***">
+    public function iterate(callable $callback) : static
+    {
+        array_walk($this->arrData, $callback);
+        return $this;
+    }
+    //</editor-fold>
+
+
+    //<editor-fold defaultstate="collapsed" desc="*** 🐘 PHP Iterator interface https://www.php.net/manual/en/class.iterator.php ***">
+    protected function getRealForeachablePosition()
+    {
+        $keys = array_keys($this->arrData);
+
+        if( !array_key_exists($this->position, $keys) ) {
+            return false;
+        }
+
+        return $keys[$this->position];
+    }
+
 
     public function current()
     {
@@ -173,25 +232,18 @@ trait Foreachable
         return $key !== false;
     }
 
+    //</editor-fold>
 
-    /**
-     * The Countable interface
-     * =======================
-     * @see https://www.php.net/manual/en/class.countable.php
-     */
 
+    //<editor-fold defaultstate="collapsed" desc="*** 🐘 PHP Countable interface https://www.php.net/manual/en/class.countable.php ***">
     public function count() : int
     {
         return count($this->arrData);
     }
+    //</editor-fold>
 
 
-    /**
-     * The ArrayAccess interface
-     * =========================
-     * @see https://www.php.net/manual/en/class.arrayaccess.php
-     */
-
+    //<editor-fold defaultstate="collapsed" desc="*** 🐘 PHP ArrayAccess interface https://www.php.net/manual/en/class.arrayaccess.php ***">
     public function offsetExists($offset)
     {
         $arrValue = array_values($this->arrData);
@@ -235,4 +287,5 @@ trait Foreachable
         unset($this->arrData[$realKey]);
         return null;
     }
+    //</editor-fold>
 }

@@ -1,6 +1,6 @@
 {
     "name": "turbolabit/php-foreachable",
-    "description": "A trait to create custom PHP DataSets/Collections faster",
+    "description": "A PHP Trait to create custom PHP DataSets/Collections",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
         }
     },
     "require": {
-        "php": ">=7.4 || >=8.0"
+        "php": "^8.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
