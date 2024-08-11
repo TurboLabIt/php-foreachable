@@ -1,5 +1,5 @@
 # php-foreachable
-A trait to create custom PHP DataSets/Collections faster
+A PHP Trait to create custom DataSets/Collections
 
 
 ## 📦 Install it with composer
@@ -9,28 +9,19 @@ composer require turbolabit/php-foreachable:dev-main
 
 ````
 
-## 🔁 A base for your DataSet/Collections
+## 🏗️ Create your DataSet/Collection
 
-Use it to quickly create collections of objects. You can then iterate over it.
+[Example here](https://github.com/TurboLabIt/php-foreachable/blob/main/src/ForeachableCollection.php)
+
+You can now use it:
 
 ````php
-<?php
- use TurboLabIt\Foreachable\Foreachable;
- 
- class Listing implements \Iterator, \Countable, \ArrayAccess
- {
-    use Foreachable;
- }
- ?>
- 
- 
  <?php
  $collListing = new Listing();
  foreach($collListing as $oneItem) {
  
     // ..
  }
- ?>
 ````
 
 See: [MyDataSet](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/MyDataSet.php) | [Usage](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/ForeachableTest.php)

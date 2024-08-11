@@ -1,13 +1,11 @@
 {
     "name": "turbolabit/php-foreachable",
-    "description": "A PHP Trait to create custom PHP DataSets/Collections",
+    "description": "A PHP Trait to create custom DataSets/Collections",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Zane",
-            "email": "info@turbolab.it"
-        }
-    ],
+    "authors": [{
+        "name": "Zane",
+        "email": "info@turbolab.it"
+    }],
     "autoload": {
         "psr-4": {
             "TurboLabIt\\Foreachable\\": "src/"
@@ -22,6 +20,6 @@
         "php": "^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^11"
     }
 }
