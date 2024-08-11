@@ -32,6 +32,6 @@ See: [MyDataSet](https://github.com/TurboLabIt/php-foreachable/blob/main/tests/M
 ````bash
 git clone git@github.com:TurboLabIt/php-foreachable.git
 cd php-foreachable
-clear && bash script/test_runner.sh
+bash script/test_runner.sh
 
 ````
