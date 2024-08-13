@@ -183,7 +183,7 @@ trait Foreachable
 
 
     //<editor-fold defaultstate="collapsed" desc="*** 🐘 PHP Iterator interface https://www.php.net/manual/en/class.iterator.php ***">
-    protected function getRealForeachablePosition()
+    protected function getRealForeachablePosition() : mixed
     {
         $keys = array_keys($this->arrData);
 
@@ -195,7 +195,7 @@ trait Foreachable
     }
 
 
-    public function current()
+    public function current() : mixed
     {
         $key = $this->getRealForeachablePosition();
         if($key === false) {
@@ -206,20 +206,20 @@ trait Foreachable
     }
 
 
-    public function key()
+    public function key() : mixed
     {
         return $this->position;
     }
 
 
-    public function next()
+    public function next() : mixed
     {
         ++$this->position;
         return $this;
     }
 
 
-    public function rewind()
+    public function rewind() : mixed
     {
         $this->position = 0;
         return $this;
@@ -244,19 +244,19 @@ trait Foreachable
 
 
     //<editor-fold defaultstate="collapsed" desc="*** 🐘 PHP ArrayAccess interface https://www.php.net/manual/en/class.arrayaccess.php ***">
-    public function offsetExists($offset)
+    public function offsetExists($offset) : bool
     {
         $arrValue = array_values($this->arrData);
         return isset($arrValue[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset) : mixed
     {
         $arrValue = array_values($this->arrData);
         return isset($arrValue[$offset]) ? $arrValue[$offset] : null;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value) : mixed
     {
         if ( is_null($offset) ) {
 
@@ -276,7 +276,7 @@ trait Foreachable
         return null;
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset) : mixed
     {
         $arrKeys = array_values(array_flip($this->arrData));
         if( !array_key_exists($offset, $arrKeys) ) {
