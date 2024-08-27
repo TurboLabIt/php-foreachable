@@ -206,24 +206,11 @@ trait Foreachable
     }
 
 
-    public function key() : mixed
-    {
-        return $this->position;
-    }
+    public function key() : mixed { return $this->position; }
 
+    public function next() : void { ++$this->position; }
 
-    public function next() : mixed
-    {
-        ++$this->position;
-        return $this;
-    }
-
-
-    public function rewind() : mixed
-    {
-        $this->position = 0;
-        return $this;
-    }
+    public function rewind() : void { $this->position = 0; }
 
 
     public function valid() : bool
@@ -231,7 +218,6 @@ trait Foreachable
         $key = $this->getRealForeachablePosition();
         return $key !== false;
     }
-
     //</editor-fold>
 
 
