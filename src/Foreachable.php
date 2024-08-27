@@ -242,36 +242,34 @@ trait Foreachable
         return isset($arrValue[$offset]) ? $arrValue[$offset] : null;
     }
 
-    public function offsetSet($offset, $value) : mixed
+    public function offsetSet($offset, $value) : void
     {
         if ( is_null($offset) ) {
 
             $this->arrData[] = $value;
-            return null;
+            return;
         }
 
         $arrKeys = array_values(array_flip($this->arrData));
         if( !array_key_exists($offset, $arrKeys) ) {
 
             $this->arrData[$offset] = $value;
-            return null;
+            return;
         }
 
         $realKey = $arrKeys[$offset];
         $this->arrData[$realKey] = $value;
-        return null;
     }
 
-    public function offsetUnset($offset) : mixed
+    public function offsetUnset($offset) : void
     {
         $arrKeys = array_values(array_flip($this->arrData));
         if( !array_key_exists($offset, $arrKeys) ) {
-            return null;
+            return;
         }
 
         $realKey = $arrKeys[$offset];
         unset($this->arrData[$realKey]);
-        return null;
     }
     //</editor-fold>
 }
