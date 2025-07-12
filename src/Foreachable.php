@@ -141,6 +141,36 @@ trait Foreachable
     //</editor-fold>
 
 
+    //<editor-fold defaultstate="collapsed" desc="*** 🔭 Search ***">
+    public function lookupSearch(mixed $itemToSearch, callable $comparisonCallback) : array
+    {
+        $arrFoundItems = [];
+
+        foreach($this->arrData ?? [] as $key => $item) {
+            if( $comparisonCallback($itemToSearch, $item) ) {
+                $arrFoundItems[$key] = $item;
+            }
+        }
+
+        return $arrFoundItems;
+    }
+
+
+    public function lookupSearchExtract(mixed $itemToSearch, callable $comparisonCallback) : array
+    {
+        $arrFoundItems = $this->lookupSearch($itemToSearch, $comparisonCallback);
+
+        foreach($arrFoundItems as $key => $item) {
+            unset($this->arrData[$key]);
+        }
+
+        return $arrFoundItems;
+    }
+
+
+    //</editor-fold>
+
+
     //<editor-fold defaultstate="collapsed" desc="*** 🔮 Filters ***">
     public function getFilteredData(callable $callback, bool $reindexToNumericArray = false) : array
     {
