@@ -166,8 +166,6 @@ trait Foreachable
 
         return $arrFoundItems;
     }
-
-
     //</editor-fold>
 
 
